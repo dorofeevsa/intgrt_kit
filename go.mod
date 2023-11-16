@@ -1,4 +1,4 @@
-module github.com/dorofeevsa/testpkg
+module github.com/dorofeevsa/testpkg/ololo
 
 go 1.21.4
 
