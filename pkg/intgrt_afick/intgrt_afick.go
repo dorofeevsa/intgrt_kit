@@ -141,6 +141,19 @@ func (a *AfickIC) CheckFileByControl(file string) (*AfickCheckRes, error) {
 	return result, nil
 }
 
+func (a *AfickIC) InitDatabase() error {
+	cmd := exec.Command(a.afickCmdPath, "-i", "-c", a.configFile)
+	out, err := cmd.Output()
+
+	if err != nil {
+		err2 := processAfickInternalError(out)
+		if err2 != nil {
+			return err2
+		}
+	}
+	return nil
+}
+
 func parseCheckOutput(output []byte) (*AfickCheckRes, error) {
 	res := AfickCheckRes{}
 

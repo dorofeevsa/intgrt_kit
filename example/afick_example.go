@@ -11,13 +11,17 @@ import (
 
 func main() {
 
-	cntr, err := afick.NewAfickIC("/usr/bin/afick", "/home/astra/work/intgrt_kit/example.conf")
+	cntr, err := afick.NewAfickIC("/usr/bin/afick", "/home/drofa/work/intgrt_kit/example.conf")
 	interfaceCheck(cntr)
+	err = cntr.InitDatabase()
+	if err != nil {
+		fmt.Printf("Problem witj afick init: %s", err)
+	}
 
 	if err != nil {
 		panic("Afick wrapper init fail")
 	}
-	err = cntr.AddFileToIc("/home/astra/work/intgrt_kit/example_folder/", &afick.AfickOption{OptName: afick.OptAfickSecAlias, OptValue: "PARSEC"})
+	err = cntr.AddFileToIc("/home/drofa/work/intgrt_kit/example_folder/", &afick.AfickOption{OptName: afick.OptAfickSecAlias, OptValue: "PARSEC"})
 	if err != nil {
 		fmt.Printf("Problem: %s", err)
 	}
@@ -40,7 +44,7 @@ func main() {
 			tempData = time.Now().String()
 			_, err = file.WriteString("ololo")
 			err = file.Close()
-			violation, res, err := cntr.HasIntegrityViolation("/home/astra/work/intgrt_kit/example_folder/", afick.OptViolationNew, afick.OptViolationChanged, afick.OptViolationDelete)
+			violation, res, err := cntr.HasIntegrityViolation("/home/drofa/work/intgrt_kit/example_folder/", afick.OptViolationNew, afick.OptViolationChanged, afick.OptViolationDelete)
 			if violation {
 				fmt.Printf("Integrity violation: %#v", res)
 			}
