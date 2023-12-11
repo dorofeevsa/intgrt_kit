@@ -142,7 +142,7 @@ func (a *AfickIC) CheckFileByControl(file string) (*AfickCheckRes, error) {
 }
 
 func (a *AfickIC) InitDatabase() error {
-	cmd := exec.Command(a.afickCmdPath, "-i", a.configFile)
+	cmd := exec.Command(a.afickCmdPath, "-i", "-c", a.configFile)
 	out, err := cmd.Output()
 
 	if err != nil {
