@@ -186,6 +186,12 @@ func parseCheckOutput(output []byte) (*AfickCheckRes, error) {
 		}
 	}
 
+	re := regexp.MustCompile("Hash database created successfully")
+	val := re.FindAllSubmatchIndex(output, -1)
+	if len(val) > 0 {
+		findedCount++
+	}
+
 	if findedCount == 0 {
 		return &res, fmt.Errorf("output result check was failed: ")
 	}
