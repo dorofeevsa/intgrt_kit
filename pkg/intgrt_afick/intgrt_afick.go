@@ -142,7 +142,7 @@ func (a *AfickIC) CheckFileByControl(file string) (*AfickCheckRes, error) {
 }
 
 func (a *AfickIC) InitDatabase() error {
-	cmd := exec.Command(a.afickCmdPath, "-i", "-c", a.configFile)
+	cmd := exec.Command(a.afickCmdPath, "-i", a.configFile)
 	out, err := cmd.Output()
 
 	if err != nil {
@@ -171,7 +171,7 @@ func parseCheckOutput(output []byte) (*AfickCheckRes, error) {
 		{"exclude_re : ([0-9]+);", &res.Exclude_re},
 		{"degraded : ([0-9]+)", &res.Degraded},
 	}
-
+	findedCount := 0
 	for _, s := range cont {
 		re := regexp.MustCompile(s.reg)
 		val := re.FindAllSubmatchIndex(output, -1)
@@ -182,7 +182,12 @@ func parseCheckOutput(output []byte) (*AfickCheckRes, error) {
 				return nil, err
 			}
 			*s.target = i
+			findedCount++
 		}
+	}
+
+	if findedCount == 0 {
+		return &res, fmt.Errorf("output result check was failed: ")
 	}
 
 	return &res, nil
